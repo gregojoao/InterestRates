@@ -1,18 +1,39 @@
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
 
-namespace InterestRates.API
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen(options =>
 {
-    public class Program
+    options.SwaggerDoc("v1", new OpenApiInfo
     {
-        public static void Main(string[] args) =>
-            CreateHostBuilder(args).Build().Run();
+        Title = "Api Taxa de Juros",
+        Description = "Api com a finalidade de disponibilizar a taxa de juros para a Api Calculadora de Juros",
+        Version = "v1"
+    });
+});
 
-        public static IHostBuilder CreateHostBuilder(string[] args) =>
-            Host.CreateDefaultBuilder(args)
-                .ConfigureWebHostDefaults(webBuilder =>
-                {
-                    webBuilder.UseStartup<Startup>();
-                });
-    }
+var app = builder.Build();
+
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
 }
+
+app.UseSwagger();
+app.UseSwaggerUI(options =>
+{
+    options.SwaggerEndpoint("/swagger/v1/swagger.json", "TaxaJuros.API v1");
+    options.DocumentTitle = "Api Taxa de Juros";
+});
+
+app.UseAuthorization();
+app.MapControllers();
+
+app.Run();
+
+// Make the implicit Program class public so test projects can access it
+public partial class Program { }

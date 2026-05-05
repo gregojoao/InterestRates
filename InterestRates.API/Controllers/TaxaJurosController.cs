@@ -1,16 +1,17 @@
-﻿using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using System.Threading.Tasks;
+﻿using Microsoft.AspNetCore.Mvc;
 
-namespace InterestRates.API.Controllers
+namespace InterestRates.API.Controllers;
+
+[ApiController]
+[Route("[controller]")]
+public class TaxaJurosController : ControllerBase
 {
-    [ApiController]
-    [Route("[controller]")]
-    public class TaxaJurosController : ControllerBase
-    {
-        [HttpGet("/taxaJuros")]
-        [ProducesResponseType(typeof(decimal), StatusCodes.Status200OK)]
-        public Task<decimal> Get() =>
-            Task.FromResult(0.01m);
-    }
+    /// <summary>
+    /// Retorna a taxa de juros padrão
+    /// </summary>
+    /// <returns>Taxa de juros de 1% (0.01)</returns>
+    [HttpGet("/taxaJuros")]
+    [ProducesResponseType(typeof(decimal), StatusCodes.Status200OK)]
+    public Task<decimal> Get() =>
+        Task.FromResult(0.01m);
 }
